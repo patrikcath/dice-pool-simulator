@@ -47,14 +47,14 @@ def generate():
         rollsLabel.configure(text=f"Rolls: {str(rolls)[1:-1]}")
 
         #process advantage, display what the dis/advantage is if there is one
-        if int(advantageInputEntry.get()) > 0:#if there's a advantage, remove n lowest rolls from the pool, where n is equivalent to the level of advantage
+        rolls.sort()
+        if int(advantageInputEntry.get()) > 0:
             advantageLabel.configure(text=f"Rolling with a +{int(advantageInputEntry.get())} advantage")
-            for i in range(0,int(advantageInputEntry.get())):
-                rolls.pop(rolls.index(min(rolls)))
-        elif int(advantageInputEntry.get()) < 0:#if there's a disadvantage, remove n HIGHEST rolls from the pool, where n is equivalent to the level of disadvantage
+            rolls = rolls[int(advantageInputEntry.get()):]#removes the first items in the list, the number depending on the level of advantage
+        elif int(advantageInputEntry.get()) < 0:
             advantageLabel.configure(text=f"Rolling with a {int(advantageInputEntry.get())} disadvantage")
-            for i in range(0,int(advantageInputEntry.get())):
-                rolls.pop(rolls.index(max(rolls)))
+            for i in range(0, -int(advantageInputEntry.get())):
+                rolls.pop()#for some inexplicable reason negative advantage gets applied incorrectly if using the same system as the positive advantage
         else:#if there's no advantage or disadvantage don't display anything
             advantageLabel.configure(text="")
 
