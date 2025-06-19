@@ -47,19 +47,22 @@ def generate():
         rollsLabel.configure(text=f"Rolls: {str(rolls)[1:-1]}")
 
         #process advantage, display what the dis/advantage is if there is one
-        rolls.sort()
+        #if there's a positive advantage:
         if int(advantageInputEntry.get()) > 0:
             advantageLabel.configure(text=f"Rolling with a +{int(advantageInputEntry.get())} advantage")
-            rolls = rolls[int(advantageInputEntry.get()):]#removes the first items in the list, the number depending on the level of advantage
+            rolls.sort()
+            rolls = rolls[int(advantageInputEntry.get()):]
+        #if there's a negative advantage:
         elif int(advantageInputEntry.get()) < 0:
             advantageLabel.configure(text=f"Rolling with a {int(advantageInputEntry.get())} disadvantage")
-            for i in range(0, -int(advantageInputEntry.get())):
-                rolls.pop()#for some inexplicable reason negative advantage gets applied incorrectly if using the same system as the positive advantage
-        else:#if there's no advantage or disadvantage don't display anything
+            rolls.sort(reverse=True)
+            rolls = rolls[abs(int(advantageInputEntry.get())):]
+        #if there's no advantage or disadvantage don't display anything
+        else:
             advantageLabel.configure(text="")
 
         #display and apply the modifier
-        #a modifier adds or subtracts a value from the final result
+        #a modifier adds or subtracts a value to the final result
         if int(modifierInputEntry.get()) > 0:
             modifierLabel.configure(text=f"Modifier: +{int(modifierInputEntry.get())}")
         elif int(modifierInputEntry.get()) < 0:
